@@ -2,15 +2,12 @@
 
 A multi-class emotion classification pipeline built on Twitch IRC chat data, using emotes as emotion proxies to classify messages across Paul Ekman's emotion taxonomy without manual annotation.
 
----
-
 ## Overview
 
 Twitch chat is a uniquely noisy short-text environment where emotes carry more emotional signal than words alone. This project builds a full pipeline from raw IRC data collection to model benchmarking, using a hybrid auto-labeling strategy to avoid manual annotation at scale.
 
-**DistilBERT-LoRA outperformed all 6 baseline models**, achieving the highest weighted F1 (0.388) and macro F1 (0.360) despite being trained on only ~7,300 instances, demonstrating the robustness of low-rank adaptation on limited data.
+DistilBERT-LoRA outperformed all 6 baseline models, achieving the highest weighted F1 (0.388) and macro F1 (0.360) despite being trained on only ~7,300 instances, demonstrating the robustness of low-rank adaptation on limited data.
 
----
 
 ## Pipeline
 
@@ -18,21 +15,20 @@ Twitch chat is a uniquely noisy short-text environment where emotes carry more e
 IRC Scraping → Cleaning I → Cleaning II → Auto-Labeling → Modeling → Evaluation
 ```
 
-1. **Data Scraping:** Custom Twitch IRC scraper using raw socket connections, collecting messages from 10-15 channels simultaneously. Filters bots, emote-only messages, and spam. Captures native Twitch emotes + 3rd party emotes via 7TV, BTTV, and FrankerFaceZ APIs.
+**Data Scraping:** Custom Twitch IRC scraper using raw socket connections, collecting messages from 10-15 channels simultaneously. Filters bots, emote-only messages, and spam. Captures native Twitch emotes + 3rd party emotes via 7TV, BTTV, and FrankerFaceZ APIs.
 
-2. **Cleaning I:** Hybrid auto-labeling pipeline combining:
+**Cleaning I:** Hybrid auto-labeling pipeline combining:
    - BERT cosine similarity (all-MiniLM-L6-v2) against Ekman emotion vectors
    - Zero-shot classification via BART-large-MNLI on emote tokens
    - Summed weight voting to assign final emotion labels
    - Override dictionary for high-confidence known emotes (e.g. `Sadge` -> sadness, `KEKW` -> happiness)
 
-3. **Cleaning II:** Outlier removal, copy-pasta filtering, class distribution balancing, final text normalization
+**Cleaning II:** Outlier removal, copy-pasta filtering, class distribution balancing, final text normalization
 
-4. **Modeling:** 7 models benchmarked across 4 emotion classes (happiness, neutral, sadness, surprise)
+**Modeling:** 7 models benchmarked across 4 emotion classes (happiness, neutral, sadness, surprise)
 
-5. **Evaluation:** F1, precision, recall, confusion matrices output to LaTeX
+**Evaluation:** F1, precision, recall, confusion matrices output to LaTeX
 
----
 
 ## Results
 
@@ -52,17 +48,17 @@ DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, 
 
 ## Tech Stack
 
-- **Scraping:** Python, socket, Twitch IRC
-- **NLP/Labeling:** HuggingFace Transformers, sentence-transformers, BART-large-MNLI
-- **Modeling:** DistilBERT-LoRA (PEFT), FastText, Scikit-learn, XGBoost
-- **Data:** Pandas, NumPy, regex, emoji
-- **Evaluation:** Scikit-learn metrics, Matplotlib, Seaborn, LaTeX output
+**Scraping:** Python, socket, Twitch IRC
+**NLP/Labeling:** HuggingFace Transformers, sentence-transformers, BART-large-MNLI
+**Modeling:** DistilBERT-LoRA (PEFT), FastText, Scikit-learn, XGBoost
+**Data:** Pandas, NumPy, regex, emoji
+**Evaluation:** Scikit-learn metrics, Matplotlib, Seaborn, LaTeX output
 
----
+
 
 ## Dataset
 
-~7,300 labeled instances across 4 emotion classes after cleaning and balancing. Raw data collected from Twitch IRC across multiple channels. Data not included in repo due to size, scraper and pipeline scripts are fully reproducible.
+Labeled instances across 4 emotion classes after cleaning and balancing. Raw data collected from Twitch IRC across multiple channels. Data not included in repo due to size, scraper and pipeline scripts are fully reproducible.
 
 | Emotion | Count |
 |---|---|
@@ -71,7 +67,7 @@ DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, 
 | Neutral | 296 |
 | Sadness | 171 |
 
----
+
 
 ## Limitations & Future Work
 
@@ -79,17 +75,3 @@ DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, 
 - Emote-based labeling captures dominant emotions but misses emotional duality and subtlety
 - Future direction: incorporate streamer speech-to-text as contextual signal for more accurate labeling
 - Expanding back to all 7 Ekman categories with sufficient class representation per emotion
-
----
-
-## Project Structure
-
-```
-├── chat_scraper.py        # Twitch IRC scraper
-├── cleaning_r1.py         # Auto-labeling pipeline (BERT + zero-shot)
-├── cleaning_r2.py         # Outlier removal, balancing, finalization
-├── chat_eda.py            # Exploratory data analysis
-├── modeling.py            # Model training and benchmarking
-├── distil_data.py         # DistilBERT dataset class
-└── project_documentation.pdf  # Full write-up with methodology and results
-```
