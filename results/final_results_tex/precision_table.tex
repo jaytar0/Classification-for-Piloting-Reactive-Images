@@ -1,0 +1,16 @@
+\begin{table}
+\caption{Precision Across Models}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & hapiness & neutral & sadness & surprise & macro avg & weighted avg \\
+\midrule
+TF-IDF: Logistic Regression & 0.430 & 0.332 & 0.257 & 0.417 & 0.359 & 0.386 \\
+TF-IDF: Random Forest & 0.415 & 0.309 & 0.320 & 0.401 & 0.361 & 0.378 \\
+TF-IDF: XG-Boost & 0.379 & 0.418 & 0.500 & 0.370 & 0.417 & 0.398 \\
+TD-IDF: SVM & 0.380 & 0.376 & 0.419 & 0.396 & 0.393 & 0.389 \\
+TD-IDF: Naieve + BoW & 0.377 & 0.420 & 0.545 & 0.411 & 0.438 & 0.417 \\
+DistilBERT-LoRa & 0.384 & 0.410 & 0.270 & 0.444 & 0.377 & 0.399 \\
+Fast Text & 0.420 & 0.344 & 0.275 & 0.400 & 0.360 & 0.379 \\
+\bottomrule
+\end{tabular}
+\end{table}

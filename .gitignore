@@ -1,0 +1,21 @@
+# Environment
+.venv/
+.env
+
+# Data
+data/chatlogs/
+data/chatlogs-old/
+data/official_dataset/
+
+# Models
+models/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+assets/
+
+# Misc
+*.egg-info/
+.DS_Store

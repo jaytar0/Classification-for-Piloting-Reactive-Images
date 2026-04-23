@@ -1,0 +1,16 @@
+\begin{table}
+\caption{Support Across Models}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & hapiness & neutral & sadness & surprise & macro avg & weighted avg \\
+\midrule
+TF-IDF: Logistic Regression & 501 & 296 & 171 & 501 & 1469 & 1469 \\
+TF-IDF: Random Forest & 501 & 296 & 171 & 501 & 1469 & 1469 \\
+TF-IDF: XG-Boost & 501 & 296 & 171 & 501 & 1469 & 1469 \\
+TD-IDF: SVM & 501 & 296 & 171 & 501 & 1469 & 1469 \\
+TD-IDF: Naieve + BoW & 501 & 296 & 171 & 501 & 1469 & 1469 \\
+DistilBERT-LoRa & 475 & 330 & 149 & 515 & 1469 & 1469 \\
+Fast Text & 500 & 315 & 185 & 469 & 1469 & 1469 \\
+\bottomrule
+\end{tabular}
+\end{table}
