@@ -4,10 +4,9 @@ A multi-class emotion classification pipeline built on Twitch IRC chat data, usi
 
 ## Overview
 
-Twitch chat is a uniquely noisy short-text environment where emotes carry more emotional signal than words alone. This project builds a full pipeline from raw IRC data collection to model benchmarking, using a hybrid auto-labeling strategy to avoid manual annotation at scale.
+The initial aim of this project was to be able to accurately train an emotional classification model based on internet lingo and short messages (twitch chat) with an associated label, emotes. This would be used in an effort to hook up to a live speech to text system to help streamers that use animated or stand-still avatars to toggle different variants of their models when expressing certain emotion, instead of manually toggling it. This project builds a full pipeline from raw IRC data collection to model benchmarking, using a hybrid auto-labeling strategy to avoid manual annotation at scale.
 
-DistilBERT-LoRA outperformed all 6 baseline models, achieving the highest weighted F1 (0.388) and macro F1 (0.360) despite being trained on only ~7,300 instances, demonstrating the robustness of low-rank adaptation on limited data.
-
+DistilBERT-LoRA outperformed all 6 baseline models, achieving the highest weighted F1 0.388 and macro F1 0.360 despite being trained on only ~7,300 instances, demonstrating the robustness of low-rank adaptation on limited data.
 
 ## Pipeline
 
@@ -42,11 +41,11 @@ IRC Scraping → Cleaning I → Cleaning II → Auto-Labeling → Modeling → E
 | Naive Bayes + BoW | 0.342 | 0.280 |
 | TF-IDF: XGBoost | 0.332 | 0.278 |
 
-DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, `v_lin`, `k_lin` attention layers with frozen base weights. Results show expected overfitting given ~7K training samples, performance would scale significantly with 50K+ instances.
+DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, `v_lin`, `k_lin` attention layers with frozen base weights. Results show expected overfitting given smaller training samples, performance would scale significantly with more data.
 
 ---
 
-## Tech Stack
+### Tech Used
 
 **Scraping:** Python, socket, Twitch IRC
 **NLP/Labeling:** HuggingFace Transformers, sentence-transformers, BART-large-MNLI
@@ -56,9 +55,9 @@ DistilBERT-LoRA was fine-tuned with `r=16`, `lora_alpha=64`, targeting `q_lin`, 
 
 
 
-## Dataset
+### Dataset
 
-Labeled instances across 4 emotion classes after cleaning and balancing. Raw data collected from Twitch IRC across multiple channels. Data not included in repo due to size, scraper and pipeline scripts are fully reproducible.
+Labeled instances across 4 emotion classes after cleaning and balancing. Raw data collected from Twitch IRC across multiple channels. Data not included in repo due to size, scraper and pipeline scripts are fully reproducible. Test set holdout is below.
 
 | Emotion | Count |
 |---|---|
